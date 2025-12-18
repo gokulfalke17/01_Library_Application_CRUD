@@ -10,7 +10,7 @@ pipeline {
         stage('Checkout') {
             steps {
                 echo 'Checkout from GitHub'
-                git branch: 'feature/new-feature',
+                git branch: 'main',
                     url: 'https://github.com/gokulfalke17/Library_Application_CRUD.git'
             }
         }
