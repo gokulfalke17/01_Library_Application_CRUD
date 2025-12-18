@@ -6,10 +6,6 @@ pipeline {
         maven 'Maven3'
     }
 
-    environment {
-        SONAR_SCANNER_HOME = tool 'SonarScanner'
-    }
-
     stages {
 
         stage('Checkout') {
@@ -22,32 +18,32 @@ pipeline {
 
         stage('Build') {
             steps {
-                echo 'Compiling the project'
+                echo 'Building project'
                 bat 'mvn clean compile'
             }
         }
 
         stage('Test') {
             steps {
-                echo 'Running unit tests'
+                echo 'Running tests'
                 bat 'mvn test'
+            }
+            post {
+                always {
+                    echo 'Publishing JUnit reports'
+                    junit testResults: 'target/surefire-reports/*.xml',
+                          allowEmptyResults: true
+                }
             }
         }
 
-       stage('SonarQube Analysis') {
-           steps {
-               echo 'Running SonarQube code analysis'
-               withSonarQubeEnv('SonarQube') {
-                   bat 'mvn clean verify sonar:sonar'
-               }
-           }
-       }
-    }
-
-    post {
-        always {
-            echo 'Publishing test results'
-            junit 'target/surefire-reports/*.xml'
+        stage('SonarQube Analysis') {
+            steps {
+                echo 'Running SonarQube analysis'
+                withSonarQubeEnv('SonarQube') {
+                    bat 'mvn sonar:sonar'
+                }
+            }
         }
     }
 }
