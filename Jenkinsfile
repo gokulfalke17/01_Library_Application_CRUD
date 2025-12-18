@@ -34,14 +34,14 @@ pipeline {
             }
         }
 
-        stage('SonarQube Analysis') {
-            steps {
-                echo 'Running SonarQube code analysis'
-                withSonarQubeEnv('SonarQube') {
-                    bat 'mvn sonar:sonar'
-                }
-            }
-        }
+       stage('SonarQube Analysis') {
+           steps {
+               echo 'Running SonarQube code analysis'
+               withSonarQubeEnv('SonarQube') {
+                   bat 'mvn clean verify sonar:sonar'
+               }
+           }
+       }
     }
 
     post {
