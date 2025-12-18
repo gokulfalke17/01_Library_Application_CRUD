@@ -25,17 +25,16 @@ pipeline {
 
         stage('Test') {
             steps {
-                echo 'Running tests'
-                bat 'mvn test'
+                echo 'Running tests with coverage'
+                bat 'mvn clean verify'
             }
             post {
                 always {
-                    echo 'Publishing JUnit reports'
-                    junit testResults: 'target/surefire-reports/*.xml',
-                          allowEmptyResults: true
+                    junit 'target/surefire-reports/*.xml'
                 }
             }
         }
+
 
         stage('SonarQube Analysis') {
             steps {
