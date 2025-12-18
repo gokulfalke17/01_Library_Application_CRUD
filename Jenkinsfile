@@ -7,7 +7,6 @@ pipeline {
     }
 
     environment {
-        // This must match the SonarQube Scanner tool name configured in Jenkins
         SONAR_SCANNER_HOME = tool 'SonarScanner'
     }
 
@@ -38,7 +37,6 @@ pipeline {
         stage('SonarQube Analysis') {
             steps {
                 echo 'Running SonarQube code analysis'
-                // Use SonarQube environment configured in Jenkins
                 withSonarQubeEnv('SonarQube') {
                     bat 'mvn sonar:sonar'
                 }
